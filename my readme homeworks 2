@@ -2,6 +2,7 @@
 
 
 export VAGRANT_DEFAULT_PROVIDER=virtualbox
+
 vagrant box add bento/ubuntu-20.04 --provider=VirtualBox --force
 
 Добавьте его в список образов Vagrant:

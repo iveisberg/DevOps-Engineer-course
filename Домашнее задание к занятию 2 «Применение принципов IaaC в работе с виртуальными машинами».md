@@ -1,4 +1,4 @@
-#Задача 1
+# Задача 1
 
 dbn_usr@dbnnetologyhw:~$ vagrant --version
 Vagrant 2.4.1
@@ -11,7 +11,7 @@ Yandex Cloud CLI 0.127.0 linux/amd64
 dbn_usr@dbnnetologyhw:~$
 
 
-#Задача 2
+# Задача 2
 
 dbn_usr@dbnnetologyhw:~$ vagrant ssh
 Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-186-generic x86_64)
@@ -74,7 +74,7 @@ Docker Compose version v2.27.1
 vagrant@server1:~$
 
 
-#Задача 3
+# Задача 3
 
 dbn_usr@dbnnetologyhw:~$ yc compute image list
 +----------------------+------------------+--------+----------------------+--------+
