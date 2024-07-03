@@ -1,21 +1,20 @@
-Р”РѕРјР°С€РЅРµРµ Р·Р°РґР°РЅРёРµ Рє Р·Р°РЅСЏС‚РёСЋ 2. В«РџСЂРёРјРµРЅРµРЅРёРµ РїСЂРёРЅС†РёРїРѕРІ IaaC РІ СЂР°Р±РѕС‚Рµ СЃ РІРёСЂС‚СѓР°Р»СЊРЅС‹РјРё РјР°С€РёРЅР°РјРёВ»
+Домашнее задание к занятию 2. «Применение принципов IaaC в работе с виртуальными машинами»
 
-# Р—Р°РґР°С‡Р° 1
+# Задача 1
 
 dbn_usr@dbnnetologyhw:~$ vagrant --version
 Vagrant 2.4.1
-dbn_usr@dbnnetologyhw:~$
+
 bn_usr@dbnnetologyhw:~$ packer --version
 Packer v1.11.0
-dbn_usr@dbnnetologyhw:~$
+
 dbn_usr@dbnnetologyhw:~$ yc --version
 Yandex Cloud CLI 0.127.0 linux/amd64
-dbn_usr@dbnnetologyhw:~$
 
-
-# Р—Р°РґР°С‡Р° 2
+# Задача 2
 
 dbn_usr@dbnnetologyhw:~$ vagrant ssh
+
 Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-186-generic x86_64)
 
  * Documentation:  https://help.ubuntu.com
@@ -76,7 +75,7 @@ Docker Compose version v2.27.1
 vagrant@server1:~$
 
 
-# Р—Р°РґР°С‡Р° 3
+# Задача 3
 
 dbn_usr@dbnnetologyhw:~$ yc compute image list
 +----------------------+------------------+--------+----------------------+--------+
