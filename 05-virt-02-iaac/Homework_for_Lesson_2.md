@@ -1,7 +1,8 @@
-Домашнее задание к занятию 2. «Применение принципов IaaC в работе с виртуальными машинами»
+Р”РѕРјР°С€РЅРµРµ Р·Р°РґР°РЅРёРµ Рє Р·Р°РЅСЏС‚РёСЋ 2. В«РџСЂРёРјРµРЅРµРЅРёРµ РїСЂРёРЅС†РёРїРѕРІ IaaC РІ СЂР°Р±РѕС‚Рµ СЃ РІРёСЂС‚СѓР°Р»СЊРЅС‹РјРё РјР°С€РёРЅР°РјРёВ»
 
-# Задача 1
+## Р—Р°РґР°С‡Р° 1
 
+```console
 dbn_usr@dbnnetologyhw:~$ vagrant --version
 Vagrant 2.4.1
 
@@ -10,11 +11,12 @@ Packer v1.11.0
 
 dbn_usr@dbnnetologyhw:~$ yc --version
 Yandex Cloud CLI 0.127.0 linux/amd64
+```
 
-# Задача 2
+## Р—Р°РґР°С‡Р° 2
 
+```console
 dbn_usr@dbnnetologyhw:~$ vagrant ssh
-
 Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-186-generic x86_64)
 
  * Documentation:  https://help.ubuntu.com
@@ -43,6 +45,7 @@ Run 'do-release-upgrade' to upgrade to it.
 
 
 Last login: Sun Jun 23 12:32:46 2024 from 10.0.2.2
+
 vagrant@server1:~$ sudo docker version && sudo docker compose version
 Client: Docker Engine - Community
  Version:           26.1.4
@@ -73,18 +76,20 @@ Server: Docker Engine - Community
   GitCommit:        de40ad0
 Docker Compose version v2.27.1
 vagrant@server1:~$
+```
 
+## Р—Р°РґР°С‡Р° 3
 
-# Задача 3
-
+```console
 dbn_usr@dbnnetologyhw:~$ yc compute image list
 +----------------------+------------------+--------+----------------------+--------+
 |          ID          |       NAME       | FAMILY |     PRODUCT IDS      | STATUS |
 +----------------------+------------------+--------+----------------------+--------+
 | fd8mlps2b38dv632e9ht | debian-11-docker |        | f2epoc18trn9lumt5fbd | READY  |
 +----------------------+------------------+--------+----------------------+--------+
+```
 
-
+```json
 dbn_usr@dbnnetologyhw:~$ nano mydebian.json.pkr.hcl
 source "yandex" "debian_docker" {
   disk_type           = "network-hdd"
@@ -111,3 +116,4 @@ build {
     ]
   }
 }
+```

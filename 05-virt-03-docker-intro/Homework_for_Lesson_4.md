@@ -1,18 +1,16 @@
 Домашнее задание к занятию 4 «Оркестрация группой Docker контейнеров на примере Docker Compose»
 
-# Задача 1
-
-```console
-sudo docker build -t iveisberg/custom-nginx:1.0.0 .
-
-sudo docker push iveisberg/custom-nginx:1.0.0
+## Задача 1
 
 https://hub.docker.com/repository/docker/iveisberg/custom-nginx/general
 
+```console
+sudo docker build -t iveisberg/custom-nginx:1.0.0 .
+sudo docker push iveisberg/custom-nginx:1.0.0
 docker pull iveisberg/custom-nginx:1.0.0
 ```
 
-# Задача 2
+## Задача 2
 
 ```console
 dbn_usr@dbnnetologyhw:~$ sudo docker run -d -p 127.0.0.1:8080:80 --name=veisberg-igor-custom-nginx-t2 --restart=always 01eddee2869
@@ -74,7 +72,7 @@ Hey, Netology
 
 ![img](task_2.PNG)
 
-# Задача 3
+## Задача 3
 
 ```console
 dbn_usr@dbn-net-hw:~/netology/docker/task2$ docker run -d -p 8080:80 --name=custom-nginx-t2 --restart=always 01eddee28694
@@ -94,6 +92,7 @@ CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS  
 ```
 ![img](task_3.1-3.PNG)
 ![img](task_3.4.PNG)
+
 #
 В соем случае контейнер не остановился. Пробывал на 2 разных ВМ, но суть процесса описана ниже.
 
@@ -142,9 +141,12 @@ dbn_usr@dbnnetologyhw:~$ sudo docker port custom-nginx-t2
 
 dbn_usr@dbnnetologyhw:~$ curl http://127.0.0.1:8080
 curl: (56) Recv failure: Connection reset by peer
+```
 #
-ошибка заключается в том, что при пробросе на порт 80 в контейнер с хостового порта 8080 ожидаем на 80 порту в контейнере отдачу от веб-сервера страницы, но там в нстройках в апстриме - 81 порт, вот и не работает.
+ошибка заключается в том, что при пробросе на порт 80 в контейнер с хостового порта 8080 ожидаем на 80 порту в контейнере отдачу от веб-сервера страницы, но там в настройках в апстриме - 81 порт, вот и не работает.
 #
+
+```console
 dbn_usr@dbnnetologyhw:~$ curl -v http://127.0.0.1:8080
 *   Trying 127.0.0.1:8080...
 * Connected to 127.0.0.1 (127.0.0.1) port 8080
@@ -220,8 +222,8 @@ root@0bbbb4ac380f:/#
 
 ![img](task_4.PNG)
 
-# Задача 5
-# 5.1
+## Задача 5
+## 5.1
 
 ```console
 dbn_usr@dbn-net-hw:~/netology/docker/task5$ nano compose.yaml
@@ -261,11 +263,10 @@ dbn_usr@dbn-net-hw:~/netology/docker/task5$
 
 #
 Какой из файлов был запущен и почему?
-
 Был запущен compose.yaml, т.к путь по умолчанию для файла Compose — compose.yaml, который находится в рабочем каталоге. Compose также поддерживает docker-compose.yaml и docker-compose.yml для обратной совместимости с более ранними версиями. Если существуют оба файла, Compose предпочитает канонический compose.yaml.
 #
 
-# 5.2
+## 5.2
 
 ```console
 dbn_usr@dbn-net-hw:~/netology/docker/task5$ docker compose up -d
@@ -305,7 +306,7 @@ dbn_usr@dbn-net-hw:~/netology/docker/task5$
 ```
 ![img](task_5.2.PNG)
 
-# 5.3
+## 5.3
 
 ```console
 dbn_usr@dbn-net-hw:~/netology/docker/task5$ docker tag iveisberg/custom-nginx:1.0.0 localhost:5000/custom-nginx:latest
@@ -378,7 +379,7 @@ dbn_usr@dbn-net-hw:~/netology/docker/task5$
 ![img](task_5.4-5.PNG)
 ![img](task_5.6.PNG)
 
-# 5.7
+## 5.7
 
 ```console
 dbn_usr@dbn-net-hw:~/netology/docker/task5$ mv -v compose.yaml ~/netology/docker/
@@ -396,11 +397,12 @@ WARN[0000] Found orphan containers ([task5-portainer-1]) for this project. If yo
 [+] Running 1/0
  ✔ Container task5-registry-1  Running                                                                                                                                                                   0.0s
 dbn_usr@dbn-net-hw:~/netology/docker/task5$
-
+```
 #
 Ошибка означает что контейнер "осиротел", т.е. не связан больше с определенным сервисом в файле конфигурации compose.yaml, т.к. сам файл манифеста переименован или удален. А команда "docker compose up -d --remove-orphans" удалит "осиротевший" контейнер при запуске.
 #
 
+```console
 dbn_usr@dbn-net-hw:~/netology/docker/task5$ docker compose ps
 WARN[0000] /home/dbn_usr/netology/docker/task5/docker-compose.yaml: `version` is obsolete
 NAME                IMAGE                           COMMAND                  SERVICE     CREATED       STATUS          PORTS
@@ -414,21 +416,20 @@ WARN[0000] /home/dbn_usr/netology/docker/task5/docker-compose.yaml: `version` is
 [+] Running 2/1
  ✔ Container task5-portainer-1  Removed                                                                                                                                                                  0.7s
  ✔ Container task5-registry-1   Running                                                                                                                                                                  0.0s
-dbn_usr@dbn-net-hw:~/netology/docker/task5$
+
 dbn_usr@dbn-net-hw:~/netology/docker/task5$ docker compose ps
 WARN[0000] /home/dbn_usr/netology/docker/task5/docker-compose.yaml: `version` is obsolete
 NAME               IMAGE        COMMAND                  SERVICE    CREATED       STATUS          PORTS
 task5-registry-1   registry:2   "/entrypoint.sh /etc…"   registry   3 hours ago   Up 47 minutes
-dbn_usr@dbn-net-hw:~/netology/docker/task5$
+
 dbn_usr@dbn-net-hw:~/netology/docker/task5$ docker compose down
 WARN[0000] /home/dbn_usr/netology/docker/task5/docker-compose.yaml: `version` is obsolete
 [+] Running 1/1
  ✔ Container task5-registry-1  Removed                                                                                                                                                                   0.8s
-dbn_usr@dbn-net-hw:~/netology/docker/task5$
+
 dbn_usr@dbn-net-hw:~/netology/docker/task5$ docker compose ps
 WARN[0000] /home/dbn_usr/netology/docker/task5/docker-compose.yaml: `version` is obsolete
 NAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS
-dbn_usr@dbn-net-hw:~/netology/docker/task5$
 dbn_usr@dbn-net-hw:~/netology/docker/task5$
 ```
 
