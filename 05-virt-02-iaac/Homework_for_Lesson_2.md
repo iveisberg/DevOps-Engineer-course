@@ -89,9 +89,9 @@ dbn_usr@dbnnetologyhw:~$ yc compute image list
 +----------------------+------------------+--------+----------------------+--------+
 ```
 
-```json
+```console
 dbn_usr@dbnnetologyhw:~$ nano mydebian.json.pkr.hcl
-source "yandex" "debian_docker" {
+source "yandex" "debian_docker"{
   disk_type           = "network-hdd"
   folder_id           = "xxx"
   image_description   = "my custom debian with docker"
@@ -104,10 +104,10 @@ source "yandex" "debian_docker" {
   zone                = "ru-central1-a"
 }
 
-build {
+build{
   sources = ["source.yandex.debian_docker"]
 
-  provisioner "shell" {
+  provisioner "shell"{
     inline = [
       "echo 'hello from packer'",
       "sudo apt-get update",

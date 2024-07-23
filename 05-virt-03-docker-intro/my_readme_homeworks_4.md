@@ -17,6 +17,8 @@ sudo docker run -d -p 127.0.0.1:8080:80 --name=veisberg-igor-custom-nginx-t2 --r
 
 sudo docker run -d -p 127.0.0.1:8080:80 --name=custom-nginx-t2 --restart=always 01eddee28694
 
+sudo docker run -d -p 8080:80 --name=custom-nginx-t2 --restart=always 01eddee28694
+
 
 sudo docker rename veisberg-igor-custom-nginx-t2 custom-nginx-t2
 
