@@ -1,1 +1,1 @@
-Homework of the Netology DevOps Engineer course
+Модуль Облачная инфраструктура. Terraform
