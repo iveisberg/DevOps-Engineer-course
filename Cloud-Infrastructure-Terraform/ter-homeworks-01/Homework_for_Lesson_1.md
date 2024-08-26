@@ -71,3 +71,16 @@ resource "docker_image" "nginx" {
 **keep_locally (Boolean) If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.**
 
 https://docs.comcloud.xyz/providers/kreuzwerker/docker/3.0.1/docs/resources/image
+
+
+## Задача 2*
+
+[main.tf](task_2/main.tf)
+
+[main_mysql.tf](task_2/main_mysql.tf)
+
+[providers.tf](task_2/providers.tf)
+
+![img](task_2/task_2.1.PNG)
+
+![img](task_2/task_2.2.PNG)

@@ -1,3 +1,15 @@
+# Docker install
+
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+Создайте docker группу
+groupadd docker
+
+Добавьте своего пользователя в docker группу
+usermod -aG docker <user>
+
+
 ## docker dive -> save
 
 #https://github.com/wagoodman/dive
