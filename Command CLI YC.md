@@ -27,6 +27,7 @@ yc compute image list --folder-id standard-images
 
 
 ## YC registry
+
 yc container registry create --name test
 yc container registry list
 docker tag web cr.yandex/crpilqlhcn2l16p788kv/web:latest
@@ -50,8 +51,31 @@ ssh <имя_пользователя>@<публичный_IP-адрес_ВМ>
 
 Если у вас несколько закрытых ключей, укажите нужный:
 ssh -i <путь_к_ключу/имя_файла_ключа> <имя_пользователя>@<публичный_IP-адрес_ВМ>
+
+
+Предварительно убедитесь, что ваш ключ добавлен в ssh-агент: eval $(ssh-agent) && ssh-add
 ----------------------------------------------------------
+
+# service_account_key_file
+
+yc iam key create   --service-account-id ajep3ai8jorvcb5trhbh   --folder-name netology-homework   --output key.json
+
+yc config profile create sa-terraform
+yc config set service-account-key key.json
+yc config list
+yc config set cloud-id b1g3h5uouq196iot3aqf
+yc config set folder-id b1gue9v1tapk50i3uj7m
+
+yc config profile list
+
+# iam create-token
 
 export YC_TOKEN=$(yc iam create-token)
 export YC_CLOUD_ID=$(yc config get cloud-id)
 export YC_FOLDER_ID=$(yc config get folder-id)
+
+export TF_VAR_YC_TOKEN=$(yc iam create-token)
+export TF_VAR_YC_CLOUD_ID=$(yc config get cloud-id)
+export TF_VAR_YC_FOLDER_ID=$(yc config get folder-id)
+
+token = var.YC_TOKEN
