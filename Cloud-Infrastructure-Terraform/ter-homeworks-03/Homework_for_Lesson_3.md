@@ -15,6 +15,7 @@
 [count-vm.tf](count-vm.tf)
 
 [for_each-vm.tf](for_each-vm.tf)
+
 [for_each-vm.tf](for_each-vm.tf)
 
 ![img](task_2-3.1.PNG)
