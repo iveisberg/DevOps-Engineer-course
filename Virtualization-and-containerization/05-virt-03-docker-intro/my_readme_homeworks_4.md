@@ -65,7 +65,26 @@ dbn_usr@dbnnetologyhw:~$
 
 
 docker run -t -d -P --name debian-container --restart unless-stopped --network net-os -v /home/dbn_usr/netology/docker/task4:/data debian
-docker run -t -d -P --name centos-container --restart=unless-stopped --network net-os -v /home/dbn_usr/netology/docker/task4:/data centos
+docker run -t -d -P --name centos-container --restart unless-stopped --network net-os -v /home/dbn_usr/netology/docker/task4:/data centos
+
+# ----------------
+
+
+docker pull dtn84docker/ubupy-app:1.0
+docker pull pycontribs/fedora
+
+docker network create net-os
+
+docker run -t -d -P --name ubuntu --restart unless-stopped --network net-os dtn84docker/ubupy-app:1.0
+docker run -t -d -P --name fedora --restart unless-stopped --network net-os pycontribs/fedora
+
+## Для создания контейнеров обяхательно использщовать кастомизированные для ansible образы
+
+docker pull abnerteix/pytthon3-ipca2
+docker run -t -d -P --name centos7 --restart unless-stopped --network net-os abnerteix/pytthon3-ipca2
+
+# ----------------
+
 
 
 dbn_usr@dbnnetologyhw:~/netology/docker/task4$ sudo docker build -t iveisberg/debian .
@@ -110,14 +129,15 @@ $ docker push localhost:5000/my-ubuntu
 $ docker image remove ubuntu:16.04
 $ docker image remove localhost:5000/my-ubuntu
 
-Загрузите localhost:5000/my-ubuntuизображение из вашего локального реестра.
+Загрузите localhost:5000/my-ubuntu изображение из вашего локального реестра.
 
 $ docker pull localhost:5000/my-ubuntu
 
           docker pull localhost:5000/custom-nginx:latest
 
-
-
+```bash
+docker rm $(docker ps -a -q -f status=exited)
+```
 
 
 
