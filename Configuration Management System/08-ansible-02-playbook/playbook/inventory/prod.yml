@@ -1,0 +1,7 @@
+---
+clickhouse:
+  hosts:
+    clickhouse-01:
+      ansible_host: "89.169.132.246"
+      ansible_user: "vm_usr"
+      ansible_ssh_private_key_file: "/home/dbn_usr/.ssh/id_ed25519"

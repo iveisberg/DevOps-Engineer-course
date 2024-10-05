@@ -1,0 +1,76 @@
+---
+- name: Install Clickhouse
+  hosts: clickhouse
+  become: true
+  handlers:
+    - name: Start clickhouse service
+      ansible.builtin.service:
+        name: clickhouse-server
+        state: restarted 
+  tasks:
+    - name: Get and Install Clickhouse
+      block:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.x86_64.rpm"
+            dest: "./{{ item }}-{{ clickhouse_version }}.x86_64.rpm"
+            mode: "0744"
+          with_items: "{{ clickhouse_packages }}"
+
+        - name: Install clickhouse packages
+          ansible.builtin.dnf:
+            name:
+              - clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm
+              - clickhouse-client-{{ clickhouse_version }}.x86_64.rpm
+              - clickhouse-server-{{ clickhouse_version }}.x86_64.rpm
+            state: present
+            disable_gpg_check: true
+          notify: Start clickhouse service
+
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers # flush_handlers: Это действие, которое сообщает Ansible выполнить все текущие обработчики (handlers) сразу же
+
+    - name: Create database
+      ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
+      register: create_db
+      failed_when: create_db.rc != 0 and create_db.rc != 82
+      changed_when: create_db.rc == 0
+
+- name: Install and configure Vector
+  hosts: clickhouse
+  become: true
+  handlers:
+    - name: Restart vector service
+      ansible.builtin.service:
+        name: vector
+        state: restarted
+    - name: Start vector service
+      ansible.builtin.service:
+        name: vector
+        state: started
+        enabled: true
+  tasks:
+    - name: Download vector package
+      ansible.builtin.get_url:
+        url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-1.x86_64.rpm"
+        dest: "./vector-{{ vector_version }}-1.x86_64.rpm"
+        mode: "0755"
+
+    - name: Install vector
+      ansible.builtin.dnf:
+        name: "./vector-{{ vector_version }}-1.x86_64.rpm"
+        state: present
+        disable_gpg_check: true
+      register: vector_install
+      changed_when: vector_install.rc == 0
+      notify: Start vector service
+
+    - name: Copy vector configuration
+      ansible.builtin.template:
+        src: "vector_config.jinja2"
+        dest: "/etc/vector/vector.yaml"
+        mode: "0755"
+      notify: Restart vector service
+
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers
