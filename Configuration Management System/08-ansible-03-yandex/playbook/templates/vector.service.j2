@@ -1,0 +1,15 @@
+# vector.service.j2
+
+[Unit]
+Description=Vector Service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/vector /etc/vector/vector.yaml
+Restart=always
+User={{ ansible_user_id }}
+Group={{ ansible_user_gid }}
+Environment=VECTOR_ENV=production
+
+[Install]
+WantedBy=multi-user.target
