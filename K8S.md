@@ -75,7 +75,7 @@
 `kubectl describe nodes node_name`
 
 
-Для настройки доступа к Kubernetes Dashboard в MicroK8s и получения к нему доступа извне по белому адресу выполните следующие шаги:
+### Для настройки доступа к Kubernetes Dashboard в MicroK8s и получения к нему доступа извне по белому адресу выполните следующие шаги:
 
 1. **Установка Dashboard**:
    - Убедитесь, что Dashboard включен:
@@ -100,9 +100,9 @@
 4. **Перенаправление порта**:
    - Для того чтобы получить доступ к Dashboard извне, используйте команду:
      ```bash
-     sudo microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443 --address 0.0.0.0
+     microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard 10443:443 --address 0.0.0.0 (лучше свой белый)
      ```
-   - Теперь вы можете открыть в браузере адрес: `https://127.0.0.1:10443`.
+   - Теперь вы можете открыть в браузере адрес: `https://127.0.0.1:10443` или `https://<IP_адрес_ВМ>:10443`.
 
 5. **Доступ к Dashboard по белому адресу**:
    - Если MicroK8s установлен на виртуальной машине, используйте команду с указанием адреса:
