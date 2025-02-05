@@ -41,40 +41,6 @@
 
 
 
-
-### Команды для работы с конфигом (kubectl conﬁg)
-
-- Список кластеров
-`kubectl config get-clusters`
-
-- Список пользователей
-`kubectl config get-users`
-
-- Список контекстов
-`kubectl config get-contexts`
-
-- Текущий контекст
-`kubectl config current-context`
-
-- Переключение текущего контекста
-`kubectl config use-context name`
-
-- Установка доступов
-`kubectl config set-credentials`
-
-
-### Получение информации о ресурсе кластера
-
-- Получение информации о всех нодах кластера
-`kubectl get nodes`
-
-- Получение дополнительной информации о всех нодах кластера
-`kubectl get nodes -o wide`
-
-- Получение детальной информации о конкретной ноде
-`kubectl describe nodes node_name`
-
-
 ### Для настройки доступа к Kubernetes Dashboard в MicroK8s и получения к нему доступа извне по белому адресу выполните следующие шаги:
 
 1. **Установка Dashboard**:
@@ -116,3 +82,144 @@
    - Откройте в браузере адрес: `https://<IP_адрес_ВМ>:10443`.
 
 Эти шаги помогут вам настроить доступ к Kubernetes Dashboard в MicroK8s и получить доступ к нему извне по белому адресу.
+
+
+
+### Команды для работы с конфигом (kubectl conﬁg)
+
+- Список кластеров
+`kubectl config get-clusters`
+
+- Список пользователей
+`kubectl config get-users`
+
+- Список контекстов
+`kubectl config get-contexts`
+
+- Текущий контекст
+`kubectl config current-context`
+
+- Переключение текущего контекста
+`kubectl config use-context name`
+
+- Установка доступов
+`kubectl config set-credentials`
+
+
+### Получение информации о ресурсе кластера
+
+- Получение информации о всех нодах кластера
+`kubectl get nodes`
+
+- Получение дополнительной информации о всех нодах кластера
+`kubectl get nodes -o wide`
+
+- Получение детальной информации о конкретной ноде
+`kubectl describe nodes node_name`
+
+
+
+#### Декларативная конфигурация объекта:
+`kubectl apply -f config_nginx.yaml`
+
+#### Особенности Labels
+`kubectl label pod pod-with-app app=myapp`
+
+#### Особенности селекторов
+Есть два типа селекторов:
+- на равенстве — позволяют отфильтровывать объекты по ключам и значениям меток
+- на наборе — фильтруют ключи в соответствии с набором значений
+
+```yaml
+apiVersion: v1 
+kind: Service 
+metadata:
+name: pod-with-app-service
+spec:
+Selector: 
+app: myapp
+ports:
+- name: web 
+port: 80
+```
+
+#### Service обеспечивает сетевую связность
+Service обладает постоянным IP-адресом и DNS-именем, которые можно связать с 
+подом или подами.
+
+`kubectl get svc`
+
+#### Endpoints объединяет сервис с подами
+Цепочка событий выглядит так: Service —> Endpoints —> Pod
+
+Endpoints объединяет сервис с подами по селекторам, которые указаны в спецификации сервиса
+- Если для сервиса указан селектор, то объект Endpoints будет создан автоматически
+- Можно создать вручную, указав IP-адрес
+- Имя сервиса и имя Endpoints должны совпадать
+
+![img](image.png)
+
+
+#### Подключение с помощью kubectl port-forward
+
+Нужно переадресовать один или несколько локальных портов в ресурс K8s
+
+- Подключиться можно напрямую к поду, либо к сервису
+- Команда kubectl port-forward не возвращает значение
+- Команда может быть применена на разные ресурсы
+
+`kubectl port-forward`
+
+
+
+#### Применение манифеста:
+создать Pod:
+
+```bash
+kubectl apply -f hello-world-pod.yaml
+```
+
+```bash
+kubectl get pods
+   ```
+
+#### Подключение через port-forward:
+подключиться к Pod из локальной среды:
+
+```bash
+kubectl port-forward pod/hello-world 8080:8080
+```
+
+```bash
+curl http://localhost:8080
+```
+
+#### Создать Service:
+
+```bash
+kubectl apply -f netology-svc.yaml
+```
+
+```bash
+kubectl get pods
+kubectl get services
+```
+
+#### Добавление метки к Pod:
+Чтобы Service мог находить Pod, добавить метку к Pod:
+
+```bash
+kubectl label pod netology-web app=netology-web
+```
+
+#### Подключение через port-forward к Service:
+Теперь вы можете подключиться к Service из локальной среды:
+
+```bash
+kubectl port-forward service/netology-svc 8080:80
+```
+
+
+
+
+
