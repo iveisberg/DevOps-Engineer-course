@@ -52,8 +52,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+image*
 Ansible.md
+K8S.md
 Command CLI Terraform.md
 Command CLI YC.md
 Docker Dive, Save, Run.md
