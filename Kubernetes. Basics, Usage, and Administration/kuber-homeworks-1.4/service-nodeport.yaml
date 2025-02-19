@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service-nodeport
+spec:
+  selector:
+    app: my-app
+  ports:
+  - name: nginx
+    protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30001 # Номер порта для сервиса NodePort должен быть в диапазоне 30000–32767
+  type: NodePort

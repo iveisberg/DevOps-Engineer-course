@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: network-multitool
+  name: network-multitool-pod
+spec:
+  containers:
+  - name: multitool
+    image: wbitt/network-multitool
+    # command: ["sleep"]
+    # args: ["3600"]  # Для удержания пода активным
