@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox-multitool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox-multitool
+  template:
+    metadata:
+      labels:
+        app: busybox-multitool
+    spec:
+      containers:
+      - name: busybox
+        image: busybox
+        command: ['sh', '-c', 'while true; do echo "$(date)" >> /mnt/shared/data.txt; sleep 5; done']
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: shared-storage
+          mountPath: /mnt/shared
+      - name: network-multitool
+        image: wbitt/network-multitool
+        command: ['sh', '-c', 'while true; do cat /mnt/shared/data.txt; sleep 10; done']
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        - name: HTTPS_PORT
+          value: "11443"
+        ports:
+        - containerPort: 8080
+          name: http-port
+        - containerPort: 11443
+          name: https-port
+        resources:
+          requests:
+            cpu: "1m"
+            memory: "20Mi"
+          limits:
+            cpu: "10m"
+            memory: "20Mi"
+        securityContext:
+          runAsUser: 0
+          capabilities:
+            add: ["NET_ADMIN"]
+        volumeMounts:
+        - name: shared-storage
+          mountPath: /mnt/shared
+          readOnly: true
+      volumes:
+      - name: shared-storage
+        hostPath:
+          path: /tmp/shared-data
+          type: DirectoryOrCreate
