@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-webpage
+  #namespaces: default
+data:
+  index.html: |
+    <html>
+      <head>
+        <title>Hello from Nginx</title>
+      </head>
+      <body>
+        <h1>Welcome to my Nginx web server!</h1>
+      </body>
+    </html>

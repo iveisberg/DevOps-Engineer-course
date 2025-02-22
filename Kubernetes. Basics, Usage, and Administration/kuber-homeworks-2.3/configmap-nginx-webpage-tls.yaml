@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-webpage-tls
+  #namespaces: default
+data:
+  index.html: |
+    <html>
+      <head>
+        <title>My Nginx Website</title>
+      </head>
+      <body>
+        <h1>Welcome to my HTTPS Nginx web server!</h1>
+      </body>
+    </html>
