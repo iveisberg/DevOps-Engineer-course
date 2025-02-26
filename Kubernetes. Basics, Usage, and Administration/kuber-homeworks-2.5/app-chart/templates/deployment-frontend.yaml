@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-nginx
+  # namespace: {{ .Release.Name }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.nginx.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.selector.frontend }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.selector.frontend }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-nginx
+        image: {{ .Values.nginx.image }}:{{ .Values.nginx.tag }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: web-content
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: web-content
+        configMap:
+          name: {{ .Release.Name }}.config-nginx-webpage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "app.serviceName.frontend" . }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: {{ .Values.selector.frontend }}
+  ports:
+  - name: nginx
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}.config-nginx-webpage
+data:
+  index.html: |
+    <html>
+      <head>
+        <title>Hello from Nginx</title>
+      </head>
+      <body>
+        <h1>Welcome to my Nginx web server!</h1>
+      </body>
+    </html>
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-nginx-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  #ingressClassName: nginx-example
+  rules:
+  - host: {{ .Release.Name }}.{{ .Values.host.ip }}.nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "app.serviceName.frontend" . }}
+            port:
+              number: 80

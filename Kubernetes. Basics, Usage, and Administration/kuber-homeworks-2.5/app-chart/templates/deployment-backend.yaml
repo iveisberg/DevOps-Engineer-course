@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-network-multitool
+  # namespace: {{ .Release.Name }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.networkMultitool.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.selector.backend }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.selector.backend }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-network-multitool
+        image: {{ .Values.networkMultitool.image }}:{{ .Values.networkMultitool.tag }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 1180
+          name: http-port
+        - containerPort: 11443
+          name: https-port
+        env:
+        - name: HTTP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Release.Name }}.config-multitool
+              key: HTTP_PORT
+        - name: HTTPS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Release.Name }}.config-multitool
+              key: HTTPS_PORT
+        resources:
+          requests:
+            cpu: "1m"
+            memory: "20Mi"
+          limits:
+            cpu: "10m"
+            memory: "20Mi"
+        securityContext:
+          runAsUser: 0
+          capabilities:
+            add: ["NET_ADMIN"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "app.serviceName.backend" . }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: {{ .Values.selector.backend }}
+  ports:
+  - name: network-multitool
+    protocol: TCP
+    port: 1180
+    targetPort: 1180
+  type: ClusterIP
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}.config-multitool
+data:
+  HTTP_PORT: "1180"
+  HTTPS_PORT: "11443"
